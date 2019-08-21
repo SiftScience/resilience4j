@@ -15,18 +15,16 @@
  */
 package io.github.resilience4j.common.bulkhead.configuration;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.validation.constraints.Min;
-
-import org.hibernate.validator.constraints.time.DurationMin;
-
 import io.github.resilience4j.common.utils.ConfigUtils;
 import io.github.resilience4j.core.ConfigurationNotFoundException;
 import io.github.resilience4j.core.StringUtils;
 import io.github.resilience4j.core.lang.Nullable;
+import org.hibernate.validator.constraints.time.DurationMin;
+
+import javax.validation.constraints.Min;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BulkheadConfigurationProperties {
 
@@ -55,7 +53,7 @@ public class BulkheadConfigurationProperties {
 			builder.maxConcurrentCalls(instanceProperties.getMaxConcurrentCalls());
 		}
 		if (instanceProperties.getMaxWaitDuration() != null) {
-			builder.maxWaitTimeDuration(instanceProperties.getMaxWaitDuration());
+			builder.maxWaitDuration(instanceProperties.getMaxWaitDuration());
 		}
 		return builder.build();
 	}
@@ -101,17 +99,6 @@ public class BulkheadConfigurationProperties {
 			return this;
 		}
 
-		/**
-		 * @param maxWaitTime max wait time in milliseconds
-		 * @return InstanceProperties
-		 * @deprecated As of release 0.16.0 , use {@link #setMaxWaitDuration(Duration)} instead
-		 */
-		@Deprecated
-		public InstanceProperties setMaxWaitTime(Long maxWaitTime) {
-			this.maxWaitDuration = Duration.ofMillis(maxWaitTime);
-			return this;
-		}
-
 		public InstanceProperties setMaxWaitDuration(Duration maxWaitDuration) {
 			this.maxWaitDuration = maxWaitDuration;
 			return this;
@@ -129,19 +116,6 @@ public class BulkheadConfigurationProperties {
 
 		public Integer getMaxConcurrentCalls() {
 			return maxConcurrentCalls;
-		}
-
-		/**
-		 * @return max wait time in milliseconds
-		 * @deprecated As of release 0.16.0 , use {@link #getMaxWaitDuration} instead
-		 */
-		@Deprecated
-		public Long getMaxWaitTime() {
-			if (maxWaitDuration != null) {
-				return maxWaitDuration.toMillis();
-			} else {
-				return null;
-			}
 		}
 
 		public Duration getMaxWaitDuration() {

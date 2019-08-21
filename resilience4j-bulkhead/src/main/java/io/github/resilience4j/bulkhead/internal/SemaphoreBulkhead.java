@@ -101,14 +101,6 @@ public class SemaphoreBulkhead implements Bulkhead {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isCallPermitted() {
-        return tryAcquirePermission();
-    }
-
     @Override
     public boolean tryAcquirePermission() {
         boolean callPermitted = tryEnterBulkhead();
@@ -208,7 +200,7 @@ public class SemaphoreBulkhead implements Bulkhead {
     boolean tryEnterBulkhead() {
 
         boolean callPermitted;
-        long timeout = config.getMaxWaitTime();
+        long timeout = config.getMaxWaitDuration().toMillis();
 
         if (timeout == 0) {
             callPermitted = semaphore.tryAcquire();
